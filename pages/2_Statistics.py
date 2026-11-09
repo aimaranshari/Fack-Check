@@ -112,12 +112,16 @@ else:
         vc    = "#ef4444" if h["label"] == "HOAKS" else "#22c55e"
         icon  = "⚠️" if h["label"] == "HOAKS" else "✅"
         snip  = h["snippet"][:80] + "…" if len(h["snippet"]) > 80 else h["snippet"]
+        hex_  = vc.lstrip("#")
+        r_val = int(hex_[0:2], 16)
+        g_val = int(hex_[2:4], 16)
+        b_val = int(hex_[4:6], 16)
         rows_html += f"""
         <tr style="border-bottom:1px solid #1e2232;">
           <td style="padding:10px 14px;color:#6b7280;font-size:12px;">{i}</td>
           <td style="padding:10px 14px;color:#9aa3b8;font-size:12px;">{snip}</td>
           <td style="padding:10px 14px;text-align:center;">
-            <span style="background:rgba({','.join(str(int(vc.lstrip('#')[j:j+2],16)) for j in (0,2,4))},0.15);
+            <span style="background:rgba({r_val},{g_val},{b_val},0.15);
                          color:{vc};font-size:11px;font-weight:700;
                          border-radius:6px;padding:3px 10px;letter-spacing:1px;">
               {icon} {h["label"]}

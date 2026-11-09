@@ -1,5 +1,4 @@
 import streamlit as st
-<<<<<<< HEAD
 from util import inject_global_css, get_text_from_url, read_uploaded_file, classify, render_result_card
 
 st.set_page_config(
@@ -45,7 +44,6 @@ left_col, right_col = st.columns([1, 3])
 with left_col:
     st.markdown('<p style="font-size:11px;letter-spacing:2px;color:#6b7280;font-weight:700;text-transform:uppercase;margin-bottom:10px;">Pilih Mode</p>', unsafe_allow_html=True)
     for label, key in MODES.items():
-        active_style = "background:#5b7ef0;color:#fff;border-color:#5b7ef0;" if st.session_state.v_tab == key else ""
         if st.button(label, key=f"vmode_{key}", use_container_width=True):
             st.session_state.v_tab = key
 
@@ -155,32 +153,3 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
-=======
-import pandas as pd
-from util import set_background_color
-
-set_background_color("#A9A9A9")
-
-st.markdown(
-    '<h1 style="color:black; font-size: 50px; text-align: center;">RIWAYAT VERIFIKASI</h1>',
-    unsafe_allow_html=True
-)
-
-columns = ["Waktu", "Narasi Berita", "Prediksi", "Hasil Verifikasi", "Referensi", "Report"]
-
-# Ambil dari session_state.history (yang diisi di page FACT CHECK)
-history = st.session_state.get("history", [])
-
-# Tombol reset/clear riwayat
-c1, c2, c3 = st.columns([1,2,1])
-with c2:
-    if st.button("Hapus Semua Riwayat", use_container_width=True):
-        st.session_state.history = []
-        history = []
-
-# Buat DataFrame dan tampilkan
-df = pd.DataFrame(history, columns=columns)
-st.dataframe(df, use_container_width=True)
-
-
->>>>>>> 6a806a3f6f44a54fe0d916b0419190b30b164279
