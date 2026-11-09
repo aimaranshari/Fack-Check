@@ -64,32 +64,38 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Distribution bar ──────────────────────────────────────────────────────────
 if total > 0:
-    st.markdown(f"""
-    <div style="background:#111318;border:1px solid #1e2232;border-radius:14px;padding:1.6rem 2rem;margin-bottom:1.6rem;">
-      <div style="font-size:11px;letter-spacing:2px;color:#6b7280;font-weight:700;
-                  text-transform:uppercase;margin-bottom:14px;">Distribusi Hasil</div>
-      <div style="display:flex;gap:0;border-radius:8px;overflow:hidden;height:28px;margin-bottom:10px;">
-        <div style="width:{pct_hoax:.1f}%;background:#ef4444;
-                    display:flex;align-items:center;justify-content:center;">
-          {"" if pct_hoax < 8 else f'<span style="font-size:11px;font-weight:700;color:#fff;">{pct_hoax:.0f}%</span>'}
-        </div>
-        <div style="width:{pct_valid:.1f}%;background:#22c55e;
-                    display:flex;align-items:center;justify-content:center;">
-          {"" if pct_valid < 8 else f'<span style="font-size:11px;font-weight:700;color:#fff;">{pct_valid:.0f}%</span>'}
-        </div>
-      </div>
-      <div style="display:flex;gap:20px;">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;"></div>
-          <span style="font-size:12px;color:#6b7280;">Hoaks ({n_hoax})</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div style="width:10px;height:10px;border-radius:50%;background:#22c55e;"></div>
-          <span style="font-size:12px;color:#6b7280;">Valid ({n_valid})</span>
-        </div>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    hoax_label  = f'<span style="font-size:11px;font-weight:700;color:#fff;">{pct_hoax:.0f}%</span>' if pct_hoax >= 8 else ""
+    valid_label = f'<span style="font-size:11px;font-weight:700;color:#fff;">{pct_valid:.0f}%</span>' if pct_valid >= 8 else ""
+
+    col_hoax, col_valid = st.columns([max(pct_hoax, 1), max(pct_valid, 1)])
+    with col_hoax:
+        st.markdown(
+            f'<div style="background:#ef4444;border-radius:8px 0 0 8px;height:28px;'
+            f'display:flex;align-items:center;justify-content:center;">{hoax_label}</div>',
+            unsafe_allow_html=True,
+        )
+    with col_valid:
+        st.markdown(
+            f'<div style="background:#22c55e;border-radius:0 8px 8px 0;height:28px;'
+            f'display:flex;align-items:center;justify-content:center;">{valid_label}</div>',
+            unsafe_allow_html=True,
+        )
+
+    leg_hoax, leg_valid, leg_pad = st.columns([2, 2, 6])
+    with leg_hoax:
+        st.markdown(
+            f'<div style="display:flex;align-items:center;gap:6px;margin-top:6px;">'
+            f'<div style="width:10px;height:10px;border-radius:50%;background:#ef4444;flex-shrink:0;"></div>'
+            f'<span style="font-size:12px;color:#6b7280;">Hoaks ({n_hoax})</span></div>',
+            unsafe_allow_html=True,
+        )
+    with leg_valid:
+        st.markdown(
+            f'<div style="display:flex;align-items:center;gap:6px;margin-top:6px;">'
+            f'<div style="width:10px;height:10px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>'
+            f'<span style="font-size:12px;color:#6b7280;">Valid ({n_valid})</span></div>',
+            unsafe_allow_html=True,
+        )
 
 # ── History table ─────────────────────────────────────────────────────────────
 st.markdown("""
