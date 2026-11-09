@@ -107,48 +107,36 @@ if total == 0:
     </div>
     """, unsafe_allow_html=True)
 else:
-    rows_html = ""
-    for i, h in enumerate(reversed(history), 1):
-        vc    = "#ef4444" if h["label"] == "HOAKS" else "#22c55e"
-        icon  = "⚠️" if h["label"] == "HOAKS" else "✅"
-        snip  = h["snippet"][:80] + "…" if len(h["snippet"]) > 80 else h["snippet"]
-        hex_  = vc.lstrip("#")
-        r_val = int(hex_[0:2], 16)
-        g_val = int(hex_[2:4], 16)
-        b_val = int(hex_[4:6], 16)
-        rows_html += f"""
-        <tr style="border-bottom:1px solid #1e2232;">
-          <td style="padding:10px 14px;color:#6b7280;font-size:12px;">{i}</td>
-          <td style="padding:10px 14px;color:#9aa3b8;font-size:12px;">{snip}</td>
-          <td style="padding:10px 14px;text-align:center;">
-            <span style="background:rgba({r_val},{g_val},{b_val},0.15);
-                         color:{vc};font-size:11px;font-weight:700;
-                         border-radius:6px;padding:3px 10px;letter-spacing:1px;">
-              {icon} {h["label"]}
-            </span>
-          </td>
-          <td style="padding:10px 14px;color:#ef4444;font-size:12px;text-align:right;">{h["hoax"]*100:.1f}%</td>
-          <td style="padding:10px 14px;color:#22c55e;font-size:12px;text-align:right;">{h["valid"]*100:.1f}%</td>
-        </tr>"""
+    # Header row
+    h_cols = st.columns([1, 5, 3, 2, 2])
+    h_cols[0].markdown('<p style="font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;margin:0;">#</p>', unsafe_allow_html=True)
+    h_cols[1].markdown('<p style="font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;margin:0;">TEKS</p>', unsafe_allow_html=True)
+    h_cols[2].markdown('<p style="font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;text-align:center;margin:0;">HASIL</p>', unsafe_allow_html=True)
+    h_cols[3].markdown('<p style="font-size:11px;color:#ef4444;font-weight:700;letter-spacing:1px;text-align:right;margin:0;">HOAKS %</p>', unsafe_allow_html=True)
+    h_cols[4].markdown('<p style="font-size:11px;color:#22c55e;font-weight:700;letter-spacing:1px;text-align:right;margin:0;">VALID %</p>', unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div style="background:#111318;border:1px solid #1e2232;border-radius:14px;overflow:hidden;">
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#0d0f14;border-bottom:1px solid #1e2232;">
-            <th style="padding:10px 14px;text-align:left;font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;">#</th>
-            <th style="padding:10px 14px;text-align:left;font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;">TEKS</th>
-            <th style="padding:10px 14px;text-align:center;font-size:11px;color:#3d4252;font-weight:700;letter-spacing:1px;">HASIL</th>
-            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#ef4444;font-weight:700;letter-spacing:1px;">HOAKS %</th>
-            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#22c55e;font-weight:700;letter-spacing:1px;">VALID %</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows_html}
-        </tbody>
-      </table>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<hr style="border-color:#1e2232;margin:6px 0 2px;">', unsafe_allow_html=True)
+
+    for i, h in enumerate(reversed(history), 1):
+        vc   = "#ef4444" if h["label"] == "HOAKS" else "#22c55e"
+        icon = "⚠️" if h["label"] == "HOAKS" else "✅"
+        snip = h["snippet"][:80] + "…" if len(h["snippet"]) > 80 else h["snippet"]
+        hex_ = vc.lstrip("#")
+        r_val, g_val, b_val = int(hex_[0:2], 16), int(hex_[2:4], 16), int(hex_[4:6], 16)
+
+        r_cols = st.columns([1, 5, 3, 2, 2])
+        r_cols[0].markdown(f'<p style="font-size:12px;color:#6b7280;margin:0;padding:6px 0;">{i}</p>', unsafe_allow_html=True)
+        r_cols[1].markdown(f'<p style="font-size:12px;color:#9aa3b8;margin:0;padding:6px 0;">{snip}</p>', unsafe_allow_html=True)
+        r_cols[2].markdown(
+            f'<div style="text-align:center;padding:4px 0;">'
+            f'<span style="background:rgba({r_val},{g_val},{b_val},0.15);color:{vc};'
+            f'font-size:11px;font-weight:700;border-radius:6px;padding:3px 10px;letter-spacing:1px;">'
+            f'{icon} {h["label"]}</span></div>',
+            unsafe_allow_html=True
+        )
+        r_cols[3].markdown(f'<p style="font-size:12px;color:#ef4444;text-align:right;margin:0;padding:6px 0;">{h["hoax"]*100:.1f}%</p>', unsafe_allow_html=True)
+        r_cols[4].markdown(f'<p style="font-size:12px;color:#22c55e;text-align:right;margin:0;padding:6px 0;">{h["valid"]*100:.1f}%</p>', unsafe_allow_html=True)
+        st.markdown('<hr style="border-color:#1e2232;margin:2px 0;">', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     _, _, btn_col = st.columns([3, 3, 1])
